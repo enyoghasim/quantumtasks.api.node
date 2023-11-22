@@ -1,35 +1,25 @@
-import { Response } from "express";
+import { Response } from 'express';
 
 interface IResponseData {
   [key: string]: any;
 }
 
-interface ErrorResponseData {
-  message: string;
-}
+// interface ErrorResponseData {
+//   message: string;
+// }
 
-export function sendSuccessResponse(
-  res: Response,
-  status: number = 200,
-  data: IResponseData | null = null,
-  message?: string
-): Response {
+export function sendSuccessResponse(res: Response, status: number = 200, data: IResponseData | null = null, message?: string): Response {
   return res.status(status).json({
-    status: "success",
-    message: message || "Request successful",
-    data: data,
+    status: 'success',
+    message: message || 'Request successful',
+    data,
   });
 }
 
-export function sendErrorResponse(
-  res: Response,
-  statusCode?: number,
-  data: IResponseData | null = null,
-  message?: string
-): Response {
+export function sendErrorResponse(res: Response, statusCode?: number, errors: IResponseData | null = null, message?: string): Response {
   return res.status(statusCode || 500).json({
-    status: "error",
-    message: message || "Internal Server Error",
-    data: data,
+    status: 'error',
+    message: message || 'Internal Server Error',
+    errors,
   });
 }

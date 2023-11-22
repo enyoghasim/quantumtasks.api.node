@@ -20,7 +20,8 @@
     "moduleResolution": "node",
     "target": "es2019",
     "outDir": "build",
-    "lib": ["es2019", "DOM"]
+    "lib": ["es2019", "DOM"],
+    "typeRoots": ["./src/types"]
   },
   "exclude": ["node_modules", "build"],
   "include": ["src/*.ts", "src/**/*.ts", "src/index.tsx.ts"]
