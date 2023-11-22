@@ -2,12 +2,11 @@ import express from 'express';
 import compression from 'compression';
 import cors from 'cors';
 import session from 'express-session';
+import { config } from 'dotenv';
 import connectToDb from './config/MongoDB';
 
 import Routes from './routes/index';
 import sessionStore from './config/SessionStore';
-
-import { config } from 'dotenv';
 
 config();
 
@@ -18,6 +17,20 @@ const server = (): void => {
   app.disable('x-powered-by');
   app.use(compression());
   app.use(cors());
+
+  // app.use((req: Request, res: Response, next: NextFunction) => {
+  //   const ipware = new Ipware();
+
+  //   const ipInfo = ipware.getClientIP(req);
+  //   const deviceInfo: string | undefined = req.headers['user-agent'];
+
+  //   const agentDetails = userAgent.parse(deviceInfo!);
+
+  //   console.log(agentDetails);
+  //   console.log(ipInfo);
+
+  //   next();
+  // });
 
   app.use(
     session({

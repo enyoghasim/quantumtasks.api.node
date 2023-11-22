@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import { compare, genSalt, hash } from 'bcryptjs';
+import { Ipware } from '@fullerstack/nax-ipware';
+import userAgent from 'express-useragent';
 import { sendErrorResponse, sendSuccessResponse } from '../utils/response';
 import UserController from './user.controller';
 import { ISignupRequestBody } from '../types/auth';
@@ -34,6 +36,47 @@ class AuthController {
 
       if (userDetails.activeSession !== req.sessionID) {
         sessionStore.destroy(userDetails.activeSession);
+      }
+
+      const ipware = new Ipware();
+
+      const ipInfo = ipware.getClientIP(req);
+      const deviceInfo: string | undefined = req.headers['user-agent'];
+
+      if (deviceInfo) {
+        const agentDetails = userAgent.parse(deviceInfo);
+        const loggedInDevices = userDetails?.loggedInDevices;
+
+        const deviceWithCurrenSessionId = loggedInDevices.find(device => device.sessionID === req.sessionID);
+
+        if (deviceWithCurrenSessionId) {
+          deviceWithCurrenSessionId.updatedAt = new Date();
+          userDetails.loggedInDevices = loggedInDevices.map(device => {
+            if (device.sessionID === req.sessionID) {
+              return deviceWithCurrenSessionId;
+            }
+
+            return device;
+          });
+        } else {
+          let newHistory = [
+            {
+              ip: ipInfo?.ip!,
+              os: agentDetails.os,
+              platform: agentDetails.platform,
+              source: agentDetails.source,
+              browser: agentDetails.browser,
+              version: agentDetails.version,
+              updatedAt: new Date(),
+              sessionID: req.sessionID,
+            },
+            ...userDetails.loggedInDevices,
+          ];
+
+          newHistory = newHistory.length > 10 ? newHistory.slice(0, 10) : newHistory;
+
+          userDetails.loggedInDevices = newHistory;
+        }
       }
 
       userDetails.activeSession = req.sessionID;

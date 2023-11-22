@@ -1,4 +1,5 @@
 import { Document, model, Schema } from 'mongoose';
+import { IUserLoginDeviceDetails } from '../types/auth';
 
 export interface IUser extends Document {
   name: string;
@@ -7,6 +8,7 @@ export interface IUser extends Document {
   activeSession: string;
   createdAt: Date;
   updatedAt: Date;
+  loggedInDevices: IUserLoginDeviceDetails[];
 }
 
 const UserSchema = new Schema<IUser>(
@@ -26,6 +28,10 @@ const UserSchema = new Schema<IUser>(
     },
     activeSession: {
       type: String,
+    },
+    loggedInDevices: {
+      type: [Object],
+      default: [],
     },
   },
   {
