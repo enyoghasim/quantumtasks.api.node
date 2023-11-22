@@ -122,6 +122,26 @@ class AuthController {
       return sendErrorResponse(res);
     }
   }
+
+  static async logout(req: Request, res: Response) {
+    try {
+      const user = req?.user;
+
+      if (!user) {
+        return sendErrorResponse(res, 401, null, 'Unauthorized.');
+      }
+
+      return req.session.destroy(err => {
+        if (err) {
+          return sendErrorResponse(res);
+        }
+
+        return sendSuccessResponse(res, 200, null, 'Logout successful.');
+      });
+    } catch (error) {
+      return sendErrorResponse(res);
+    }
+  }
 }
 
 export default AuthController;
