@@ -1,0 +1,10 @@
+{
+  "watch": ["src"],
+  "verbose": false,
+  "ext": "js,ts,json",
+  "ignore": ["src/**/*.spec.ts", "src/**/*.test.ts"],
+  "exec": "ts-node ./src/index.ts",
+  "execMap": {
+    "ts": "node -r @swc-node/register"
+  }
+}
