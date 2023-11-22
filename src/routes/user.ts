@@ -28,4 +28,34 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
+router.get('/security/login-history', async (req: Request, res: Response) => {
+  try {
+    const user = req?.user;
+
+    if (!user) {
+      return sendErrorResponse(res, 401, null, 'Unauthorized.');
+    }
+
+    return sendSuccessResponse(
+      res,
+      200,
+      user.loggedInDevices.map(e => {
+        return {
+          ip: e.ip,
+          os: e.os,
+          platform: e.platform,
+          source: e.source,
+          browser: e.browser,
+          version: e.version,
+          updatedAt: e.updatedAt,
+          isCurrentSession: e.sessionID === req.sessionID,
+        };
+      }),
+      'Login history retrieved successfully.',
+    );
+  } catch (error) {
+    return sendErrorResponse(res);
+  }
+});
+
 export default router;
