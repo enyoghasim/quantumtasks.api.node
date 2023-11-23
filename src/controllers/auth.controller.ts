@@ -5,11 +5,18 @@ import { Ipware } from '@fullerstack/nax-ipware';
 import userAgent from 'express-useragent';
 import { sendErrorResponse, sendSuccessResponse } from '../utils/response';
 import UserController from './user.controller';
-import { ISignupRequestBody } from '../types/auth';
+import {
+  IForgetPasswordRequestBody,
+  IRequest,
+  ILoginRequestBody,
+  ISignupRequestBody,
+  IResetPasswordRequestBody,
+  IResetPasswordRequestParams,
+} from '../types/auth';
 import sessionStore from '../config/SessionStore';
 
 class AuthController {
-  static async login(req: Request, res: Response) {
+  static async login(req: IRequest<ILoginRequestBody>, res: Response) {
     try {
       const errors = validationResult(req);
 
@@ -88,7 +95,7 @@ class AuthController {
     }
   }
 
-  static async signup(req: Request<{}, {}, ISignupRequestBody>, res: Response) {
+  static async signup(req: IRequest<ISignupRequestBody>, res: Response) {
     try {
       const errors = validationResult(req);
 
@@ -138,6 +145,22 @@ class AuthController {
 
         return sendSuccessResponse(res, 200, null, 'Logout successful.');
       });
+    } catch (error) {
+      return sendErrorResponse(res);
+    }
+  }
+
+  static async forgotPassword(req: IRequest<IForgetPasswordRequestBody>, res: Response) {
+    try {
+      return sendSuccessResponse(res, 200, null, 'Password reset link sent successfully.');
+    } catch (error) {
+      return sendErrorResponse(res);
+    }
+  }
+
+  static async resetPassword(req: IRequest<IResetPasswordRequestBody, IResetPasswordRequestParams>, res: Response) {
+    try {
+      return sendSuccessResponse(res, 200, null, 'Password reset successfully.');
     } catch (error) {
       return sendErrorResponse(res);
     }
