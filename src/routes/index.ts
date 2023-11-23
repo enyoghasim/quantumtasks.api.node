@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import Auth from './auth';
 import User from './user';
-import requireAuth from '../middlewares/auth';
+import { requireAuth } from '../middlewares/auth';
 
 const router = Router();
 
