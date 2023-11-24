@@ -274,6 +274,10 @@ class AuthController {
 
       await userDetails.save();
 
+      await ResetPasswordTokens.deleteMany({
+        user: userDetails._id,
+      });
+
       return sendSuccessResponse(res, 200, null, 'Password reset successfully.');
     } catch (error) {
       return sendErrorResponse(res);
