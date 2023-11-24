@@ -26,6 +26,7 @@
     "express-useragent": "^1.0.15",
     "helmet": "^7.1.0",
     "mongoose": "^8.0.1",
+    "openai": "^4.20.0",
     "validator": "^13.11.0"
   },
   "devDependencies": {

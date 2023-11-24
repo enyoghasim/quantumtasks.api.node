@@ -21,5 +21,6 @@ module.exports = {
   plugins: ['prettier'],
   rules: {
     'no-underscore-dangle': 0,
+    'import/prefer-default-export': 0,
   },
 };

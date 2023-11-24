@@ -4,7 +4,6 @@ import cors from 'cors';
 import session from 'express-session';
 import { config } from 'dotenv';
 import connectToDb from './config/MongoDB';
-
 import Routes from './routes/index';
 import sessionStore from './config/SessionStore';
 
@@ -39,6 +38,7 @@ const server = (): void => {
   connectToDb()
     .then(() => {
       console.log('Connected to DB');
+      // TodoController.generateTodo('i want to Build a React Native Application with Redux Thunk');
     })
     .then(() => {
       app.listen(process.env.PORT! as string, () => {
