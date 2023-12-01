@@ -1,13 +1,17 @@
 import { Router } from 'express';
 import Auth from './auth';
 import User from './user';
-import Todo from './todo';
+import Order from './order';
+import Payment from './payment';
+import Webhooks from './webhooks';
 import { requireAuth } from '../middlewares/auth';
 
 const router = Router();
 
 router.use('/auth', Auth);
 router.use('/user', requireAuth, User);
-router.use('/todo', requireAuth, Todo);
+router.use('/order', requireAuth, Order);
+router.use('/payment', requireAuth, Payment);
+router.use('/webhooks', Webhooks);
 
 export default router;
